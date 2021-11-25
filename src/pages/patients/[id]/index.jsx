@@ -5,7 +5,6 @@ import Link from 'next/link'
 
 import { parseCookies } from "nookies";
 
-
 //Components
 import Datatable from "../../../components/elements/datatable/ActionsTable";
 import SectionTitle from "../../../components/elements/section-title";

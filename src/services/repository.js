@@ -1,7 +1,7 @@
 import axios from "axios";
 import getConfig from "next/config";
 
-const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
+const { publicRuntimeConfig } = getConfig();
 
 const baseDomain = publicRuntimeConfig.SERVER_URI; // API for products
 export const basePostUrl = publicRuntimeConfig.SERVER_URI; // API for post

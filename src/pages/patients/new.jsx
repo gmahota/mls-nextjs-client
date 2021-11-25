@@ -8,7 +8,7 @@ import SectionTitle from '../../components/elements/section-title/index';
 import Widget from '../../components/elements/widget/index';
 import FormValidation from './../../components/elements/forms/validation';
 
-import Repository, { baseAthletesURL, serializeQuery } from "../../services/Repository";
+import Repository, { baseAthletesURL } from "../../services/Repository";
 
 
 export default function PatientNew() {
