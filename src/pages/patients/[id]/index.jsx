@@ -18,7 +18,7 @@ import { AiFillFileExcel, AiFillFilePdf } from "react-icons/ai"
 //Services
 import patientsService from "../../../services/patients";
 
-export default function Project({ patient }) {
+export default function PatientDetails({ patient }) {
   const router = useRouter();
   if (router.isFallback) {
     return <p>Carregando...</p>;

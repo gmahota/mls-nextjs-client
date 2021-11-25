@@ -7,15 +7,16 @@ import { parseCookies } from "nookies";
 import SectionTitle from '../../components/elements/section-title/index';
 import Widget from '../../components/elements/widget/index';
 import FormValidation from './../../components/elements/forms/validation';
+
 import Repository, { baseAthletesURL, serializeQuery } from "../../services/Repository";
 
 
-export default function Schools() {
-  
+export default function PatientNew() {
+
   const router = useRouter(); //vai buscar o router
 
   const onSubmit = async (data) => {
-    
+
     await Repository.post(`${baseAthletesURL}/athletes`, data)
       .then(
         router.push("/patients")
@@ -65,8 +66,8 @@ export default function Schools() {
       >
       <FormValidation items={items} onSubmit={onSubmit}/>
     </Widget>
-     
-      
+
+
     </>)
 }
 

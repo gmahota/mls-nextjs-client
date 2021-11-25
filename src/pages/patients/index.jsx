@@ -13,7 +13,7 @@ import { FiPlus } from 'react-icons/fi';
 import { AiFillFileExcel } from "react-icons/ai"
 
 
-export default function Schools({
+export default function PatientList({
   allPatients,
 }) {
   const router = useRouter();
