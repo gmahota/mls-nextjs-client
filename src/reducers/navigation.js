@@ -21,7 +21,7 @@ import {
 
 const initialState = [
   {
-    title: "Sales - System",
+    title: "Life Style - System",
     items: [
       {
         url: "/",
@@ -52,28 +52,6 @@ const initialState = [
           {
             url: "/",
             title: "Statement",
-            items: [],
-          },
-        ],
-      },
-      {
-        url: "/",
-        icon: <FiShoppingBag size={20} />,
-        title: "Sales",
-        items: [
-          {
-            url: "/orders",
-            title: "Order's",
-            items: [],
-          },
-          {
-            url: "/gr",
-            title: "GR's",
-            items: [],
-          },
-          {
-            url: "/invoice",
-            title: "Invoice",
             items: [],
           },
         ],
