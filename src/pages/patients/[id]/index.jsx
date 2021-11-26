@@ -17,7 +17,12 @@ import { AiFillFileExcel, AiFillFilePdf } from "react-icons/ai"
 //Services
 import patientsService from "../../../services/patients";
 
-export default function PatientDetails({ patient }) {
+import getConfig from "next/config";
+
+// Only holds serverRuntimeConfig and publicRuntimeConfig
+const { publicRuntimeConfig } = getConfig();
+
+export default function PatientDetails({ patient ,stravaStats}) {
   const router = useRouter();
   if (router.isFallback) {
     return <p>Carregando...</p>;
@@ -25,7 +30,7 @@ export default function PatientDetails({ patient }) {
 
   const handlerEdit = () => { }
 
-  const TabGeneral = () => {
+  const TabGeneral = ({stravaStats}) => {
     return (<>
       <div className="table table-auto w-full">
         <div className="table-row-group">
@@ -41,7 +46,7 @@ export default function PatientDetails({ patient }) {
 
           <div className="table-row" >
             <div className="table-cell whitespace-nowrap px-2 text-sm">
-              Strava
+              Strava ID
             </div>
             <div className="table-cell px-2 whitespace-normal">
               <Link href={`https://www.strava.com/athletes/${patient.strava_id}`}>
@@ -57,11 +62,35 @@ export default function PatientDetails({ patient }) {
             <div className="table-cell px-2 whitespace-normal">
               {patient.status}
             </div>
+            
+          </div>
+
+          <div className="table-row" >
+            <div className="table-cell whitespace-nowrap px-2 text-sm">
+              Total Distance
+            </div>
+            
+            <div className="table-cell px-2">
+              {stravaStats.ytd_run_totals.distance/ 1000} Km
+            </div>
           </div>
 
         </div>
       </div> </>
     );
+  }
+
+  const TabActivities = ({stravaMostRecentRide,
+    stravaMostRecentRun,
+    stravaStats}) => {
+    // <StravaStats
+    //         stravaStats={stravaStats}
+    //         stravaMostRecentRun={stravaMostRecentRun}
+    //         stravaMostRecentRide={stravaMostRecentRide}
+    //       />
+
+      
+
   }
 
   const TabTask = () => {
@@ -327,7 +356,7 @@ export default function PatientDetails({ patient }) {
       index: 0,
       title: "General",
       active: true,
-      content: <TabGeneral />,
+      content: <TabGeneral  stravaStats={stravaStats} />,
     },
     {
       index: 1,
@@ -444,9 +473,48 @@ export const getServerSideProps = async (ctx) => {
 
   const patient = await patientsService.get_Id(id);
 
+  const CLIENT_SECRET =publicRuntimeConfig.STRAVA_CLIENT_SECRET
+  const STRAVA_CLIENT_REFRESH_TOKEN = publicRuntimeConfig.STRAVA_CLIENT_REFRESH_TOKEN
+  const clientId = publicRuntimeConfig.STRAVA_CLIENT_Id
+
+  const resToken = await fetch(
+    `https://www.strava.com/api/v3/oauth/token?client_id=${clientId}&client_secret=${CLIENT_SECRET}&grant_type=refresh_token&refresh_token=${STRAVA_CLIENT_REFRESH_TOKEN}`,
+    {
+      method: 'POST',
+    },
+  )
+  const {
+    access_token: newToken,
+    refresh_token: newRefreshToken,
+  } = await resToken.json()
+
+  const resStats = await fetch(
+    `https://www.strava.com/api/v3/athletes/${patient.strava_id}/stats`,
+    {
+      headers: {
+        Authorization: `Bearer ${newToken}`,
+      },
+    },
+  )
+
+  const resActivities = await fetch(
+    'https://www.strava.com/api/v3/athlete/activities?per_page=100',
+    {
+      headers: {
+        Authorization: `Bearer ${newToken}`,
+      },
+    },
+  )
+
+  const stravaStats = await resStats.json()
+  const stravaActivies = await resActivities.json()
+
+  console.log(stravaStats)
+
   return {
     props: {
-      patient
+      patient,
+      stravaStats
     }
   };
 
