@@ -1,4 +1,4 @@
-import Repository, { baseAthletesURL, serializeQuery } from "./Repository";
+import Repository, { baseAthletesURL, serializeQuery } from "./repository";
 
 const get_All = async (filter) => {
   try {
