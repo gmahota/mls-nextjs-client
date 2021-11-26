@@ -12,7 +12,7 @@ class MyDocument extends Document {
       <Html lang="en">
         <Head>
           <meta charSet="utf-8" />
-          <meta name="description" content="React TailwindCSS admin template" />
+          <meta name="description" content="Mahota LifeStyle System" />
           <link rel="icon" href="/favicon.ico" />
           <link
             rel="apple-touch-icon"
