@@ -10,8 +10,9 @@ import Datatable from "../../../components/elements/datatable/ActionsTable";
 import SectionTitle from "../../../components/elements/section-title";
 import Widget from "../../../components/elements/widget";
 import { UnderlinedTabs } from "../../../components/elements/tabs";
+import FoodPlanCalendar from "../../../components/partials/food-plan-calendar/calendar";
 
-import { FiPlus, FiEdit, FiPrinter, FiSend, FiTrash } from 'react-icons/fi';
+import { FiPlus, FiCalendar,FiEdit, FiPrinter, FiSend, FiTrash } from 'react-icons/fi';
 import { AiFillFileExcel, AiFillFilePdf } from "react-icons/ai"
 
 //Services
@@ -22,7 +23,7 @@ import getConfig from "next/config";
 // Only holds serverRuntimeConfig and publicRuntimeConfig
 const { publicRuntimeConfig } = getConfig();
 
-export default function PatientDetails({ patient ,stravaStats}) {
+export default function PatientDetails({ patient, stravaStats }) {
   const router = useRouter();
   if (router.isFallback) {
     return <p>Carregando...</p>;
@@ -30,7 +31,7 @@ export default function PatientDetails({ patient ,stravaStats}) {
 
   const handlerEdit = () => { }
 
-  const TabGeneral = ({stravaStats}) => {
+  const TabGeneral = ({ stravaStats }) => {
     return (<>
       <div className="table table-auto w-full">
         <div className="table-row-group">
@@ -62,16 +63,16 @@ export default function PatientDetails({ patient ,stravaStats}) {
             <div className="table-cell px-2 whitespace-normal">
               {patient.status}
             </div>
-            
+
           </div>
 
           <div className="table-row" >
             <div className="table-cell whitespace-nowrap px-2 text-sm">
               Total Distance
             </div>
-            
+
             <div className="table-cell px-2">
-              {stravaStats.ytd_run_totals.distance/ 1000} Km
+              {stravaStats.ytd_run_totals.distance / 1000} Km
             </div>
           </div>
 
@@ -80,16 +81,16 @@ export default function PatientDetails({ patient ,stravaStats}) {
     );
   }
 
-  const TabActivities = ({stravaMostRecentRide,
+  const TabActivities = ({ stravaMostRecentRide,
     stravaMostRecentRun,
-    stravaStats}) => {
+    stravaStats }) => {
     // <StravaStats
     //         stravaStats={stravaStats}
     //         stravaMostRecentRun={stravaMostRecentRun}
     //         stravaMostRecentRide={stravaMostRecentRide}
     //       />
 
-      
+
 
   }
 
@@ -180,114 +181,26 @@ export default function PatientDetails({ patient ,stravaStats}) {
       handlerEdit={handlerEdit} />;
   }
 
-  const TabContract = () => {
-    const columns = React.useMemo(
-      () => [
+  const TabFoodPlan = () => {
+    const foodPlanCalendar = [
+      [
         {
-          Header: "Id",
-          accessor: "id"
+          title: 'Matabicho', start: '2021-11-29T08:00:00', end: '2021-11-29T10:00:00',
+          className: 'bg-success'
         },
         {
-          Header: "Customer",
-          accessor: "customer"
-        },
-        {
-          Header: "Name",
-          accessor: "name"
-        },
-        {
-          Header: "Cellphone",
-          accessor: "cellphone"
-        },
-        {
-          Header: "Last Payment",
-          accessor: "lastPayment"
-        },
-        {
-          Header: "Date Last Payment",
-          accessor: "dtLastPayment"
-        },
-        {
-          Header: "Render",
-          accessor: "render"
-        },
-        {
-          Header: "Total Payment",
-          accessor: "totalPayement"
-        },
-        {
-          Header: "Total",
-          accessor: "total"
-        },
-        {
-          Header: "Status",
-          accessor: "status",
+          title: 'Almoço', start: '2021-11-30T12:00:00', end: '2021-11-30T14:00:00',
+          className: 'bg-success'
         }
-      ],
-      []
-    );
-    const data = [
-      {
-        id: 1,
-        customer: "C001",
-        name: "Guimarães Mahota",
-        cellphone: "849568415",
-        lastPayment: "6000",
-        dtLastPayment: "2021-08-10",
-        totalPayement: "12000",
-        total: "1000000",
-        render: 2,
-        status: "pedding"
-      }
-    ];
-
+      ]
+    ]
     return (
       <Widget
-        title="Details"
-        description={
-          <span>
-            {patient.name}
-          </span>
-        }
-        right={
-          <div className="flex flex-col lg:flex-row lg:flex-wrap items-start lg:items-center justify-start space-y-2 lg:space-y-0 lg:space-x-2">
-
-            <button
-              className="btn btn-default btn-rounded bg-blue-500 hover:bg-blue-600 text-white"
-              type="button">
-
-              <FiPlus className="stroke-current text-white" size={18} />
-              <span>New</span>
-            </button>
-            <button
-              className="btn btn-default btn-rounded bg-blue-500 hover:bg-blue-600 text-white"
-              type="button">
-
-              <FiPrinter className="stroke-current text-white" size={18} />
-              <span>Print</span>
-            </button>
-
-            <button
-              className="btn btn-default btn-rounded bg-blue-500 hover:bg-blue-600 text-white"
-              type="button">
-
-              <AiFillFileExcel className="stroke-current text-white" size={18} />
-              <span>Importar</span>
-            </button>
-            <button
-              className="btn btn-default btn-rounded bg-blue-500 hover:bg-blue-600 text-white"
-              type="button">
-
-              <AiFillFilePdf className="stroke-current text-white" size={18} />
-              <span>PDF</span>
-            </button>
-
-          </div>
-        }
+        title="Food Plan Calendar"
+        description=""
+        right=""
       >
-        <Datatable columns={columns} data={data} link="/projects"
-          canView={true} canEdit={true}
-          handlerEdit={handlerEdit} />
+        <FoodPlanCalendar initialEvents={foodPlanCalendar} />
       </Widget>
 
 
@@ -356,7 +269,7 @@ export default function PatientDetails({ patient ,stravaStats}) {
       index: 0,
       title: "General",
       active: true,
-      content: <TabGeneral  stravaStats={stravaStats} />,
+      content: <TabGeneral stravaStats={stravaStats} />,
     },
     {
       index: 1,
@@ -366,9 +279,9 @@ export default function PatientDetails({ patient ,stravaStats}) {
     },
     {
       index: 2,
-      title: "Contract",
+      title: "Food Plan",
       active: false,
-      content: <TabContract />,
+      content: <TabFoodPlan />,
     },
     {
       index: 3,
@@ -391,6 +304,10 @@ export default function PatientDetails({ patient ,stravaStats}) {
 
   ];
 
+  function handlerCalendar() {
+    router.push(`/patients/${patient.id}/calendar`)
+  }
+
   return (
     <>
       <SectionTitle title="Patient" subtitle={`${patient.id} - ${patient.name}`} />
@@ -403,6 +320,14 @@ export default function PatientDetails({ patient ,stravaStats}) {
         }
         right={
           <div className="flex flex-col lg:flex-row lg:flex-wrap items-start lg:items-center justify-start space-y-2 lg:space-y-0 lg:space-x-2">
+
+            <button
+              className="btn btn-default btn-rounded bg-blue-500 hover:bg-blue-600 text-white"
+              type="button" onClick={handlerCalendar}>
+
+              <FiCalendar className="stroke-current text-white" size={18} />
+              <span>Activities</span>
+            </button>
 
             <button
               className="btn btn-default btn-rounded bg-blue-500 hover:bg-blue-600 text-white"
@@ -473,7 +398,7 @@ export const getServerSideProps = async (ctx) => {
 
   const patient = await patientsService.get_Id(id);
 
-  const CLIENT_SECRET =publicRuntimeConfig.STRAVA_CLIENT_SECRET
+  const CLIENT_SECRET = publicRuntimeConfig.STRAVA_CLIENT_SECRET
   const STRAVA_CLIENT_REFRESH_TOKEN = publicRuntimeConfig.STRAVA_CLIENT_REFRESH_TOKEN
   const clientId = publicRuntimeConfig.STRAVA_CLIENT_Id
 
